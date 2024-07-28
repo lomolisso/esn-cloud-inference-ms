@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    environment:
+      - SECRET_KEY=secret_ket
+      - INFERENCE_MICROSERVICE_HOST=app
+      - INFERENCE_MICROSERVICE_PORT=8002
+      - CLOUD_API_URL=http://localhost:8000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_NUM_WORKERS=2
+    ports:
+      - "8002:8002"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  worker1:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    volumes:
+      - .:/app
+    depends_on:
+      - app
+      - redis
+    environment:
+      - INFERENCE_MICROSERVICE_HOST=app
+      - INFERENCE_MICROSERVICE_PORT=8002
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_NUM_WORKERS=2
+      - WORKER_INDEX=1
+
+  worker2:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    volumes:
+      - .:/app
+    depends_on:
+      - app
+      - redis
+    environment:
+      - SECRET_KEY=secret_ket
+      - INFERENCE_MICROSERVICE_HOST=app
+      - INFERENCE_MICROSERVICE_PORT=8002
+      - CLOUD_API_URL=http://localhost:8000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_NUM_WORKERS=2
+      - WORKER_INDEX=2

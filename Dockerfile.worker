@@ -1,0 +1,10 @@
+FROM armswdev/tensorflow-arm-neoverse:r23.12-tf-2.14.0-eigen
+
+# requirements for app are installed
+COPY ./requirements.worker /tmp/requirements.worker
+RUN pip3 install --upgrade pip
+RUN pip install -r /tmp/requirements.worker
+
+# run backend app
+WORKDIR /app
+CMD celery -A app.tasks.celery_app worker --concurrency=1 --loglevel=info -Q prediction_queue,model_queue_$WORKER_INDEX -n worker$WORKER_INDEX
