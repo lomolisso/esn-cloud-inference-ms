@@ -4,7 +4,7 @@ import redis
 from fastapi import APIRouter, status
 from app.api import schemas
 from app.tasks.celery_app import update_tf_model_task, compute_prediction_task
-from app.core.config import CELERY_NUM_WORKERS, REDIS_HOST, REDIS_PORT, REDIS_DB_HISTORY, CLOUD_API_URL, CLOUD_INFERENCE_LAYER
+from app.core.config import CELERY_NUM_WORKERS, REDIS_HOST, REDIS_PORT, REDIS_DB_HISTORY, CLOUD_API_URL, CLOUD_INFERENCE_LAYER, ADAPTIVE_INFERENCE
 from app import utils
 
 router = APIRouter()
@@ -75,8 +75,8 @@ async def prediction_result(task_result: schemas.CeleryTaskResult):
         gateway_name=gateway_name,
         sensor_name=sensor_name,
         prediction=prediction
-    )
-    if heuristic_result != CLOUD_INFERENCE_LAYER:
+    ) if ADAPTIVE_INFERENCE else None
+    if heuristic_result is not None and heuristic_result != CLOUD_INFERENCE_LAYER:
         layers = {0: "SENSOR_INFERENCE_LAYER", 1: "GATEWAY_INFERENCE_LAYER", 2: "CLOUD_INFERENCE_LAYER", -1: "ERROR"}
         print(f"{sensor_name} inference layer transitioned to {layers[heuristic_result]}")
         utils.clear_prediction_history(redis_client, gateway_name, sensor_name)
