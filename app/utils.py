@@ -59,6 +59,7 @@ def cloud_adaptive_inference_heuristic(redis_client: redis.Redis, gateway_name: 
     """
     Cloud Adaptive Inference Heuristic
 
+    u_t: state counter at time step t
     M_t: prediction history at time step t
     sigma(M_t): number of abnormal predictions in history at time step t
     psi_q: max length of inference queue
