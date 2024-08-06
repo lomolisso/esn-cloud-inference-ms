@@ -63,8 +63,8 @@ def cloud_adaptive_inference_heuristic(redis_client: redis.Redis, gateway_name: 
     M_t: prediction history at time step t
     sigma(M_t): number of abnormal predictions in history at time step t
     psi_q: max length of inference queue
-    phi_g: threshold for normal predictions, if less than phi_g, set inference layer to sensor
-    psi_g: threshold for abnormal predictions, if greater than psi_g, set inference layer to cloud
+    phi_c: threshold for normal predictions, if less than phi_g, set inference layer to gateway
+    psi_c: threshold for abnormal predictions, if greater than psi_g, return error code
     """
     
     u_t = update_prediction_counter(redis_client, gateway_name, sensor_name)
