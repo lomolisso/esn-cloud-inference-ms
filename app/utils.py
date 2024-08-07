@@ -22,7 +22,8 @@ def _set_prediction_counter(redis_client: redis.Redis, gateway_name: str, sensor
 
 def update_prediction_counter(redis_client: redis.Redis, gateway_name: str, sensor_name: str):
     prediction_counter = _get_prediction_counter(redis_client, gateway_name, sensor_name)
-    _set_prediction_counter(redis_client, gateway_name, sensor_name, prediction_counter + 1)
+    prediction_counter += 1
+    _set_prediction_counter(redis_client, gateway_name, sensor_name, prediction_counter)
 
     return prediction_counter
 
