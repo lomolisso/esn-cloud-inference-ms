@@ -70,12 +70,14 @@ async def prediction_result(task_result: schemas.CeleryTaskResult):
     prediction_result: schemas.PredictionResult = task_result.result
     prediction: int = prediction_result.prediction
 
-    heuristic_result = utils.cloud_adaptive_inference_heuristic(
-        redis_client=redis_client,
-        gateway_name=gateway_name,
-        sensor_name=sensor_name,
-        prediction=prediction
-    ) if ADAPTIVE_INFERENCE else None
+    heuristic_result = None
+    if ADAPTIVE_INFERENCE:
+        heuristic_result = utils.cloud_adaptive_inference_heuristic(
+            redis_client=redis_client,
+            gateway_name=gateway_name,
+            sensor_name=sensor_name,
+            prediction=prediction
+        )
 
     if heuristic_result is not None and heuristic_result != CLOUD_INFERENCE_LAYER:
         layers = {0: "SENSOR_INFERENCE_LAYER", 1: "GATEWAY_INFERENCE_LAYER", 2: "CLOUD_INFERENCE_LAYER", -1: "ERROR"}
