@@ -27,30 +27,28 @@ class InferenceDescriptor(BaseModel):
     inference_layer: InferenceLayer
     send_timestamp: int
 
-
-# --- Prediction Request ---
-class PredictionRequest(BaseModel):
+class SensorData(BaseModel):
     reading: SensorReading
     low_battery: bool
     inference_descriptor: InferenceDescriptor
 
-class PredictionRequestExport(BaseExport):
-    export_value: PredictionRequest
-
-
-# --- Prediction Result ---
+class SensorDataExport(BaseExport):
+    export_value: SensorData
 
 class PredictionResult(BaseModel):
+    gateway_name: str
+    sensor_name: str
     reading_uuid: str
-    send_timestamp: int
-    inference_layer: InferenceLayer
+    low_battery: bool
     prediction: int
+
+
+# --- TaskResult ---
+
+class TaskResultPayload(BaseModel):
+    prediction_result: int
     heuristic_result: Optional[int] = None
 
-class CeleryTaskResult(BaseModel):
-    metadata: Metadata
-    request: PredictionRequest
-    result: PredictionResult
-
-class PredictionResultExport(BaseExport):
-    export_value: PredictionResult
+class TaskResult(BaseModel):
+    status: str
+    result: Optional[TaskResultPayload] = None

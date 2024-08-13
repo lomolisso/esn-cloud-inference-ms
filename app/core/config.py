@@ -23,8 +23,9 @@ ABNORMAL_LABELS = json.loads(os.environ.get("ABNORMAL_LABELS", "[2, 3]"))
 
 REDIS_HOST: str = os.environ.get("REDIS_HOST", "localhost")
 REDIS_PORT: int = int(os.environ.get("REDIS_PORT", 6379))
-REDIS_DB_CELERY: int = int(os.environ.get("REDIS_DB_CELERY", 0))
-REDIS_DB_HISTORY: int = int(os.environ.get("REDIS_DB_HISTORY", 1))
+REDIS_DB_CELERY_BROKER: int = int(os.environ.get("REDIS_DB_CELERY_BROKER", 0))
+REDIS_DB_CELERY_BACKEND: int = int(os.environ.get("REDIS_DB_CELERY_BACKEND", 1))
+REDIS_DB_HISTORY: int = int(os.environ.get("REDIS_DB_HISTORY", 2))
 
 CELERY_NUM_WORKERS: int = int(os.environ.get("CELERY_NUM_WORKERS", 1))
 CELERY_CONCURRENCY_LEVEL: int = int(os.environ.get("CELERY_CONCURRENCY_LEVEL", 1))
