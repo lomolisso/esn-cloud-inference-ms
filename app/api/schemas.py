@@ -25,7 +25,7 @@ class InferenceLayer(int, enum.Enum):
 
 class InferenceDescriptor(BaseModel):
     inference_layer: InferenceLayer
-    send_timestamp: int
+    send_timestamp: Optional[int] = None
 
 class SensorData(BaseModel):
     reading: SensorReading
