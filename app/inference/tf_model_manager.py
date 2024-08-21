@@ -1,6 +1,6 @@
 import base64
 import tempfile
-import gzip
+import zlib
 
 class TFModelManager:
     """
@@ -26,8 +26,8 @@ class TFModelManager:
         # Decode b64 encoded model into bytes
         _decoded_model = base64.b64decode(tf_model_b64)
 
-        # Decompress the gzip model
-        _decoded_model = gzip.decompress(_decoded_model)
+        # Decompress the compressed model
+        _decoded_model = zlib.decompress(_decoded_model)
 
         # Check if the model size matches the expected size
         if len(_decoded_model) != tf_model_bytesize:
