@@ -40,7 +40,7 @@ def compute_prediction_task(request):
     
     # --- Prediction ---
     reading_uuid = sensor_reading.uuid
-    input_data = sensor_reading.values
+    input_data = sensor_reading.values[:25] # TODO: remove the [:25] when the model is trained with the full sequence
     prediction = model_manager.predict(input_data)
     
     # --- Return PredictionResult ---

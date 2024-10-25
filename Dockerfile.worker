@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.14.0
+FROM armswdev/tensorflow-arm-neoverse:r23.12-tf-2.14.0-eigen
 
 # requirements for app are installed
 COPY ./requirements.worker /tmp/requirements.worker
